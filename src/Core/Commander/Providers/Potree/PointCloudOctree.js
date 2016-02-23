@@ -100,7 +100,7 @@ PointCloudOctree.prototype.updateVisibility = function(camera, renderer){
 			
 			if((typeof parent === "undefined" || parent instanceof PointCloudOctreeNode) && geometryNode.loaded){
 				var pcoNode = new PointCloudOctreeNode();
-				var sceneNode = new THREE.PointCloud(geometry, this.material);
+				var sceneNode = new THREE.Points(geometry, this.material);
 				sceneNode.visible = false;
 				
 				pcoNode.name = geometryNode.name;
@@ -269,7 +269,7 @@ PointCloudOctree.prototype.update = function(camera, renderer){
 	
 	this.updateVisibility(camera, renderer);
 	
-	this.updateMaterial(this.material, this.visibleNodes, camera, renderer);
+	//this.updateMaterial(this.material, this.visibleNodes, camera, renderer);
 	
 	this.updateVisibleBounds();
 	
@@ -569,7 +569,7 @@ PointCloudOctree.prototype.getProfile = function(start, end, width, depth, callb
 			
 			var pointsFound = 0;
 			
-			if(object instanceof THREE.PointCloud){
+			if(object instanceof THREE.Points){
 				var geometry = object.geometry;
 				var positions = geometry.attributes.position;
 				var p = positions.array;
@@ -632,7 +632,7 @@ PointCloudOctree.prototype.getProfile = function(start, end, width, depth, callb
 			if(object == this || object.level < depth){
 				for(var i = 0; i < object.children.length; i++){
 					var child = object.children[i];
-					if(child instanceof THREE.PointCloud){
+					if(child instanceof THREE.Points){
 						var sphere = child.boundingSphere.clone().applyMatrix4(child.matrixWorld);
 						if(cutPlane.distanceToSphere(sphere) < sphere.radius){
 							stack.push(child);	
@@ -1199,7 +1199,7 @@ PointCloudOctree.prototype.generateTerain = function(){
 	geometry.addAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
 	var material = new THREE.PointCloudMaterial({size: 20, color: 0x00ff00});
 	
-	var pc = new THREE.PointCloud(geometry, material);
+	var pc = new THREE.Points(geometry, material);
         //ATTENTION : where come from this scene
 	scene.add(pc);
 	

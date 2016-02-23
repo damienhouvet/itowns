@@ -20,8 +20,8 @@ define('Core/Commander/Providers/PotreeProvider',[
         sceneInstance = scene;
         
         this.POCLoader.load("resources/stereotest/cloud.js", function(geometry){
-	
-		var pointcloud = new PointCloudOctree(geometry);
+		var material = new THREE.PointsMaterial( { size: 0.1, vertexColors: THREE.VertexColors } );
+		var pointcloud = new PointCloudOctree(geometry, material);
 			pointcloud.material.pointSizeType = PointSizeType.ADAPTIVE;
 			pointcloud.material.size = 100;
 		
