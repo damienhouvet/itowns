@@ -20,10 +20,10 @@ define('Core/Commander/Providers/PotreeProvider',[
         sceneInstance = scene;
         
         this.POCLoader.load("resources/stereotest/cloud.js", function(geometry){
-		var material = new THREE.PointsMaterial( { size: 0.1, vertexColors: THREE.VertexColors } );
+		var material = new THREE.PointsMaterial( { size: 1, vertexColors: THREE.VertexColors } );
 		var pointcloud = new PointCloudOctree(geometry, material);
-			pointcloud.material.pointSizeType = PointSizeType.ADAPTIVE;
-			pointcloud.material.size = 100;
+			//pointcloud.material.pointSizeType = PointSizeType.ADAPTIVE;
+			//pointcloud.material.size = 100;
 		
         var bottomLeft 		= new THREE.Vector3 (4201215.424138484, 171429.945145441, 4779294.873914789);
 		//var topLeft 		= new THREE.Vector3(4201220, 172052, 4779290);
