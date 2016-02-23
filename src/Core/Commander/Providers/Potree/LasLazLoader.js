@@ -1,5 +1,5 @@
-define(['./LASFile', './LASDecoder', './LasLazBatcher','./Version', './bluebird'], 
-function(LASFile, LASDecoder, LasLazBatcher, Version, Promise){
+define(['./LASFile', './LASDecoder', './LasLazBatcher','./Version', 'when'], 
+function(LASFile, LASDecoder, LasLazBatcher, Version, when){
 
 /**
  * laslaz code taken and adapted from plas.io js-laslaz
@@ -63,12 +63,14 @@ LasLazLoader.prototype.parse = function loadData(node, buffer){
 	var lf = new LASFile(buffer);
 	var handler = new LasLazBatcher(node);
 	
-	return Promise.resolve(lf).cancellable().then(function(lf) {
+	//return Promise.resolve(lf).cancellable().then(function(lf) {
+        return when.resolve(lf).then(function(lf) {
 		return lf.open().then(function() {
 			lf.isOpen = true;
 			return lf;
 		})
-		.catch(Promise.CancellationError, function(e) {
+		//.catch(Promise.CancellationError, function(e) {
+                .catch(function(e) {
 			// open message was sent at this point, but then handler was not called
 			// because the operation was cancelled, explicitly close the file
 			return lf.close().then(function() {
@@ -113,7 +115,7 @@ LasLazLoader.prototype.parse = function loadData(node, buffer){
 		};
 		
 		return reader();
-	}).then(function(v) {
+	})/*.then(function(v) {
 		var lf = v[0];
 		// we're done loading this file
 		//
@@ -124,13 +126,13 @@ LasLazLoader.prototype.parse = function loadData(node, buffer){
 			lf.isOpen = false;
 			// Delay this a bit so that the user sees 100% completion
 			//
-			return Promise.delay(200).cancellable();
+			return when.delay(200).cancel();
 		}).then(function() {
 			// trim off the first element (our LASFile which we don't really want to pass to the user)
 			//
 			return v.slice(1);
 		});
-	}).catch(Promise.CancellationError, function(e) {
+	}).catch(function(e) {
 		// If there was a cancellation, make sure the file is closed, if the file is open
 		// close and then fail
 		if (lf.isOpen) 
@@ -139,7 +141,7 @@ LasLazLoader.prototype.parse = function loadData(node, buffer){
 				throw e;
 			});
 		throw e;
-	});
+	});*/
 };
 
 LasLazLoader.prototype.handle = function(node, url){
